@@ -26,7 +26,8 @@ export const UserWrapper = styled.View`
 
 export const UserInfo = styled.View`
   flex-direction: row;
-  align-items: center; ;
+  align-items: center;
+  margin-top: ${RFValue(15)}px;
 `;
 export const Photo = styled.Image`
   width: ${RFValue(48)}px;

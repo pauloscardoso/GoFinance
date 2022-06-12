@@ -1,18 +1,24 @@
 import React from 'react';
-import { Platform } from 'react-native'
-import Icon  from 'react-native-vector-icons/MaterialIcons'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {useTheme} from 'styled-components'
+import { Platform } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTheme } from 'styled-components';
 
 import { Dashboard } from '../screens/Dashboard';
 import { Register } from '../screens/Register';
 
-const { Navigator, Screen } = createBottomTabNavigator();
+export type AppRoutesParamList = {
+  Listagem: undefined;
+  Cadastrar: undefined;
+  Resumo: undefined;
+};
+
+const { Navigator, Screen } = createBottomTabNavigator<AppRoutesParamList>();
 
 export const AppRoutes = () => {
   const theme = useTheme();
 
-  return(
+  return (
     <Navigator
       screenOptions={{
         headerShown: false,
@@ -21,52 +27,37 @@ export const AppRoutes = () => {
         tabBarLabelPosition: 'beside-icon',
         tabBarStyle: {
           height: 51,
-          paddingVertical: Platform.OS === 'ios'
-          ? 20
-          : 0
-        }
+          paddingVertical: Platform.OS === 'ios' ? 20 : 0,
+        },
       }}
     >
       <Screen
         name="Listagem"
         component={Dashboard}
         options={{
-          tabBarIcon: (({ size, color}) =>
-            <Icon
-              name="format-list-bulleted"
-              size={size}
-              color={color}
-            />
-          )
+          tabBarIcon: ({ size, color }) => (
+            <Icon name="format-list-bulleted" size={size} color={color} />
+          ),
         }}
       />
       <Screen
         name="Cadastrar"
         component={Register}
         options={{
-          tabBarIcon: (({ size, color}) =>
-            <Icon
-              name="attach-money"
-              size={size}
-              color={color}
-            />
-          )
+          tabBarIcon: ({ size, color }) => (
+            <Icon name="attach-money" size={size} color={color} />
+          ),
         }}
-
       />
       <Screen
         name="Resumo"
         component={Register}
         options={{
-          tabBarIcon: (({ size, color}) =>
-            <Icon
-              name="pie-chart"
-              size={size}
-              color={color}
-            />
-          )
+          tabBarIcon: ({ size, color }) => (
+            <Icon name="pie-chart" size={size} color={color} />
+          ),
         }}
       />
     </Navigator>
-  )
-}
+  );
+};
