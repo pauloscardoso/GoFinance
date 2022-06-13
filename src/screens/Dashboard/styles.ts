@@ -2,7 +2,10 @@ import styled from 'styled-components/native';
 import { FlatList, FlatListProps } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { DataListProps } from '.';
-import { RFPercentage, RFValue } from 'react-native-responsive-fontsize';
+import {
+  RFPercentage,
+  RFValue,
+} from 'react-native-responsive-fontsize';
 import { BorderlessButton } from 'react-native-gesture-handler';
 
 export const Container = styled.View`
@@ -88,3 +91,9 @@ export const TransactionsList = styled(
   showsVerticalScrollIndicator: false,
   contentContainerStyle: { paddingBottom: 10 },
 })``;
+
+export const LoadContainer = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+`;

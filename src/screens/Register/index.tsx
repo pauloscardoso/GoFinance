@@ -15,21 +15,14 @@ import { TransactionTypeButton } from '../../components/Form/TransactionTypeButt
 import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
 import { CategorySelect } from '../CategorySelect';
 import { InputForm } from '../../components/Form/InputForm';
-import {
-  Container,
-  Header,
-  Title,
-  Form,
-  Fields,
-  TransactionTypes,
-} from './styles';
+
+import { Container, Header, Title, Form, Fields, TransactionTypes } from './styles';
 
 export interface FormData {
   [name: string]: string;
 }
 
-type RegisterNavigationProps =
-  BottomTabNavigationProp<AppRoutesParamList>;
+type RegisterNavigationProps = BottomTabNavigationProp<AppRoutesParamList>;
 
 const schema = yup.object().shape({
   name: yup.string().required('Nome é obrigatório'),
@@ -42,8 +35,7 @@ const schema = yup.object().shape({
 
 export const Register = () => {
   const [transactionType, setTransactionType] = React.useState('');
-  const [categoryModalOpen, setCategoryModalOpen] =
-    React.useState(false);
+  const [categoryModalOpen, setCategoryModalOpen] = React.useState(false);
 
   const [category, setCategory] = React.useState({
     key: 'category',
@@ -61,7 +53,7 @@ export const Register = () => {
     resolver: yupResolver(schema),
   });
 
-  const handleTransactionTypeSelect = (type: 'up' | 'down') => {
+  const handleTransactionTypeSelect = (type: 'positive' | 'negative') => {
     setTransactionType(type);
   };
 
@@ -74,17 +66,15 @@ export const Register = () => {
   };
 
   const handleRegister = async (form: FormData) => {
-    if (!transactionType)
-      return Alert.alert('Selectione o tipo da transação');
+    if (!transactionType) return Alert.alert('Selectione o tipo da transação');
 
-    if (category.key === 'category')
-      return Alert.alert('Selectione a categoria');
+    if (category.key === 'category') return Alert.alert('Selectione a categoria');
 
     const newTransaction = {
       id: String(uuid.v4()),
       name: form.name,
       amount: form.amount,
-      transactionType,
+      type: transactionType,
       category: category.key,
       date: new Date(),
     };
@@ -103,10 +93,7 @@ export const Register = () => {
       const dataFormatted = [...currentData, newTransaction];
 
       //Salvando dados no AsyncStorage, porém substuiu toda vez que há um novo cadastro
-      await AsyncStorage.setItem(
-        dataKey,
-        JSON.stringify(dataFormatted),
-      );
+      await AsyncStorage.setItem(dataKey, JSON.stringify(dataFormatted));
 
       reset();
       setTransactionType('');
@@ -114,6 +101,7 @@ export const Register = () => {
         key: 'category',
         name: 'Categoria',
       });
+
       navigation.navigate('Listagem');
     } catch (error) {
       console.log(error);
@@ -156,27 +144,21 @@ export const Register = () => {
               <TransactionTypeButton
                 type="up"
                 title="Income"
-                onPress={() => handleTransactionTypeSelect('up')}
-                isActive={transactionType === 'up'}
+                onPress={() => handleTransactionTypeSelect('positive')}
+                isActive={transactionType === 'positive'}
               />
               <TransactionTypeButton
                 type="down"
                 title="Outcome"
-                onPress={() => handleTransactionTypeSelect('down')}
-                isActive={transactionType === 'down'}
+                onPress={() => handleTransactionTypeSelect('negative')}
+                isActive={transactionType === 'negative'}
               />
             </TransactionTypes>
 
-            <CategorySelectButton
-              title={category.name}
-              onPress={handleOpenSelectCategoryModal}
-            />
+            <CategorySelectButton title={category.name} onPress={handleOpenSelectCategoryModal} />
           </Fields>
 
-          <Button
-            title="Enviar"
-            onPress={handleSubmit(handleRegister)}
-          />
+          <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
         </Form>
 
         <Modal visible={categoryModalOpen}>

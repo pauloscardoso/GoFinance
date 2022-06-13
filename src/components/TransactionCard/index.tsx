@@ -11,10 +11,9 @@ import {
   Date,
 } from './styles';
 
-export type Type = 'positive' | 'negative' | string;
 
 export interface TransactionCardProps {
-  type: Type;
+  type: 'positive' | 'negative'
   name: string;
   amount: string;
   category: string;
