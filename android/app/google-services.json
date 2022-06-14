@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "421146143501-em4lqh93ed4gejfgokb2ogpj46rcfqqu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gofinance",
+            "certificate_hash": "57a9e9c9b88a81c81d54ebb89d6b44d0dccaf029"
+          }
+        },
+        {
           "client_id": "421146143501-t43bodl4cf6d62g2k50vtdc3ns0g3jf8.apps.googleusercontent.com",
           "client_type": 3
         }

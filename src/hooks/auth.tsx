@@ -14,35 +14,64 @@ interface User {
 }
 
 interface AuthContextData {
-  user: User;
+  user: User | undefined;
   signInWithGoogle(): Promise<void>;
 }
 
 const AuthContext = React.createContext({} as AuthContextData);
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const user = {
-    id: '123123123',
-    name: 'Paulo Sergio',
-    email: 'paulocardoso19@live.com',
-  };
+  const [user, setUser] = React.useState<User>();
 
   GoogleSignin.configure({
     webClientId:
-      '"421146143501-t43bodl4cf6d62g2k50vtdc3ns0g3jf8.apps.googleusercontent.com"',
+      '421146143501-t43bodl4cf6d62g2k50vtdc3ns0g3jf8.apps.googleusercontent.com',
   });
 
+  React.useEffect(() => {
+    const unsubscribe = auth().onAuthStateChanged((user) => {
+      if (user) {
+        const { displayName, photoURL, uid, email } = user;
+
+        if (!displayName || !photoURL) {
+          throw new Error('Missing information from Google Account.');
+        }
+
+        setUser({
+          id: uid,
+          name: displayName,
+          photo: photoURL,
+          email: email!,
+        });
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   const signInWithGoogle = async () => {
-    // Get the users ID token
     const { idToken } = await GoogleSignin.signIn();
-
-    // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+    const result = auth().signInWithCredential(googleCredential);
 
-    // Sign-in the user with the credential
-    const user_sign_in = auth().signInWithCredential(googleCredential);
+    if ((await result).user) {
+      const { displayName, photoURL, uid, email } = (await result).user;
 
-    user_sign_in
+      if (!displayName || !photoURL) {
+        throw new Error('Missing information from Google Account.');
+      }
+
+      setUser({
+        id: uid,
+        name: displayName,
+        photo: photoURL,
+        email: email!,
+      });
+    }
+
+    result
       .then((user) => {
         console.log(user);
       })
