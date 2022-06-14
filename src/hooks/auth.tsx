@@ -2,6 +2,8 @@ import React from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 
+const { webClientId } = process.env;
+
 interface AuthProviderProps {
   children: React.ReactNode;
 }
