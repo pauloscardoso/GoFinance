@@ -20,8 +20,7 @@ import {
 } from './styles';
 
 export const SignIn = () => {
-  const { user } = useAuth();
-  console.log(user.name);
+  const { signInWithGoogle } = useAuth();
 
   return (
     <Container>
@@ -38,8 +37,12 @@ export const SignIn = () => {
       </Header>
       <Footer>
         <FooterWrapper>
-          <SignInSocialButton title="Entrar com Google" svg={GoogleSVG} />
-          <SignInSocialButton title="Entrar com Apple" svg={AppleSVG} />
+          <SignInSocialButton
+            title="Entrar com Google"
+            svg={GoogleSVG}
+            onPress={signInWithGoogle}
+          />
+          {/* <SignInSocialButton title="Entrar com Apple" svg={AppleSVG} /> */}
         </FooterWrapper>
       </Footer>
     </Container>

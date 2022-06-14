@@ -12,11 +12,17 @@ import { RFValue } from 'react-native-responsive-fontsize';
 interface Props extends RectButtonProps {
   title: string;
   svg: React.FC<SvgProps>;
+  onPress: (event: MouseEvent) => void;
 }
 
-export const SignInSocialButton = ({ title, svg: Svg, ...rest }: Props) => {
+export const SignInSocialButton = ({
+  onPress,
+  title,
+  svg: Svg,
+  ...rest
+}: Props) => {
   return (
-    <Button {...rest}>
+    <Button {...rest} onPress={onPress}>
       <ImageContainer>
         <Svg />
       </ImageContainer>
