@@ -8,15 +8,23 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import uuid from 'react-native-uuid';
 import { useNavigation } from '@react-navigation/native';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { AppRoutesParamList } from '../../routes/app.routes';
 
+import { AppRoutesParamList } from '../../routes/app.routes';
 import { Button } from '../../components/Form/Button';
 import { TransactionTypeButton } from '../../components/Form/TransactionTypeButton';
 import { CategorySelectButton } from '../../components/Form/CategorySelectButton';
 import { CategorySelect } from '../CategorySelect';
 import { InputForm } from '../../components/Form/InputForm';
+import { useAuth } from '../../hooks/auth';
 
-import { Container, Header, Title, Form, Fields, TransactionTypes } from './styles';
+import {
+  Container,
+  Header,
+  Title,
+  Form,
+  Fields,
+  TransactionTypes,
+} from './styles';
 
 export interface FormData {
   [name: string]: string;
@@ -36,6 +44,7 @@ const schema = yup.object().shape({
 export const Register = () => {
   const [transactionType, setTransactionType] = React.useState('');
   const [categoryModalOpen, setCategoryModalOpen] = React.useState(false);
+  const { user } = useAuth();
 
   const [category, setCategory] = React.useState({
     key: 'category',
@@ -68,7 +77,8 @@ export const Register = () => {
   const handleRegister = async (form: FormData) => {
     if (!transactionType) return Alert.alert('Selectione o tipo da transação');
 
-    if (category.key === 'category') return Alert.alert('Selectione a categoria');
+    if (category.key === 'category')
+      return Alert.alert('Selectione a categoria');
 
     const newTransaction = {
       id: String(uuid.v4()),
@@ -83,7 +93,7 @@ export const Register = () => {
     //Fazendo uma tratativa de erros
     try {
       //criação de um alias para a strign '@gofinance:transactions'
-      const dataKey = '@gofinance:transactions';
+      const dataKey = `@gofinance:transactions_user:${user?.id}`;
       //Recuperando dados do AsyncStorage
       const data = await AsyncStorage.getItem(dataKey);
       // Convertendo os dados para JSON
@@ -155,7 +165,10 @@ export const Register = () => {
               />
             </TransactionTypes>
 
-            <CategorySelectButton title={category.name} onPress={handleOpenSelectCategoryModal} />
+            <CategorySelectButton
+              title={category.name}
+              onPress={handleOpenSelectCategoryModal}
+            />
           </Fields>
 
           <Button title="Enviar" onPress={handleSubmit(handleRegister)} />
