@@ -28,7 +28,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   GoogleSignin.configure({
     webClientId:
-      '421146143501-t43bodl4cf6d62g2k50vtdc3ns0g3jf8.apps.googleusercontent.com',
+      //paste here your webClientId,
   });
 
   const signInWithGoogle = async () => {
